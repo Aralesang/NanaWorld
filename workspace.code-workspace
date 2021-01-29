@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"pixelbyte.love2d.path": "D:\\tool\\Love\\love.exe",
+		"code-runner.clearPreviousOutput": true,
+		"code-runner.saveAllFilesBeforeRun": true,
+		"pixelbyte.love2d.runOnSave": true,
+		"emmylua.debugger.defaultProgram": "D:/MyProject/Love2D/HellowWorld/run.bat"
+	}
+}
