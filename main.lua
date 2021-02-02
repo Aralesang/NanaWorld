@@ -1,4 +1,4 @@
-package.cpath = package.cpath .. ';C:/Users/leshu/AppData/Roaming/JetBrains/IdeaIC2020.2/plugins/intellij-emmylua/classes/debugger/emmy/windows/x64/?.dll'
+package.cpath = package.cpath .. ';plugins/?.dll'
 local dbg = require('emmy_core')
 dbg.tcpListen('localhost', 9966)
 --dbg.waitIDE()
@@ -18,7 +18,7 @@ local backgroundImage
 
 function love.load()
 	print("游戏启动...")
-	--加载中文字体(启动太过缓慢所以先不加载了)
+	--加载中文字体(启动太过缓慢所以先不加载了)	
 	--local myFont = love.graphics.newFont("simhei.ttf",24)
 	--love.graphics.setFont(myFont)
 	--love.keyboard.setKeyRepeat(true)
@@ -28,13 +28,13 @@ function love.load()
 	backgroundImage = love.graphics.newImage("image/background.jpg")
 	--创建npc
 	local npc = Role:new("image/npc.png","娜娜")
-	--npc:setScale(2,2)
+	npc:setScale(2,2)
 	npc.animation:stop(0)
 	roleArr["nana"] = npc
 	
 	--创建角色
 	local player = Role:new("image/player.png","player",50,0)
-	--player:setScale(2,2)
+	player:setScale(2,2)
 	roleArr["sakuya"] = player
 
 	print(player.gameObjectName)

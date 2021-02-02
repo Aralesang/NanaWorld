@@ -59,7 +59,7 @@ function PlayerController:keypressed(key)
         local bullet = Bullet:new(bulletImage)
         bullet:setScale(0.2,0.2)
         local x,y = self.player:getPosition()
-        y = y + 10
+        y = y + 30
         bullet:setPosition(x,y)
     end
 end

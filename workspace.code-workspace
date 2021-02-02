@@ -5,7 +5,7 @@
 		}
 	],
 	"settings": {
-		"pixelbyte.love2d.path": "D:\\tool\\Love\\love.exe",
+		"pixelbyte.love2d.path": "C:\\Program Files\\LOVE\\love.exe",
 		"code-runner.clearPreviousOutput": true,
 		"code-runner.saveAllFilesBeforeRun": true,
 		"pixelbyte.love2d.runOnSave": true,
