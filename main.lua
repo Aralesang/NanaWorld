@@ -1,6 +1,4 @@
-package.cpath =
-    package.cpath ..
-    ";C:/Users/leshu/AppData/Roaming/JetBrains/IdeaIC2020.2/plugins/intellij-emmylua/classes/debugger/emmy/windows/x64/?.dll"
+package.cpath = package.cpath .. ";./?.dll"
 local dbg = require("emmy_core")
 dbg.tcpListen("localhost", 9966)
 --dbg.waitIDE()
