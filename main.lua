@@ -1,6 +1,6 @@
-package.cpath = package.cpath .. ";./?.dll"
-local dbg = require("emmy_core")
-dbg.tcpListen("localhost", 9966)
+package.cpath = package.cpath .. ';plugins/?.dll'
+local dbg = require('emmy_core')
+dbg.tcpListen('localhost', 9966)
 --dbg.waitIDE()
 require "plugins.camera"
 local GameObject = require "scripts.game_object"
