@@ -56,11 +56,12 @@ function PlayerController:keypressed(key)
         if bulletImage == nil then
             bulletImage = love.graphics.newImage("image/bullet.png")
         end
-        local bullet = Bullet:new(bulletImage)
-        bullet:setScale(0.2,0.2)
+       
         local x,y = self.player:getPosition()
         y = y + 30
-        bullet:setPosition(x,y)
+        local bullet = Bullet:new(bulletImage,x,y)
+        bullet:setScale(0.2,0.2)
+        --bullet:setPosition(x,y)
     end
 end
 

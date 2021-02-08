@@ -3,6 +3,7 @@ local dbg = require('emmy_core')
 dbg.tcpListen('localhost', 9966)
 --dbg.waitIDE()
 require "plugins.camera"
+require "scripts.global"
 local GameObject = require "scripts.game_object"
 local Game = require "scripts.game"
 local Animation = require "plugins.animation"
@@ -25,7 +26,7 @@ function love.load()
 
     love.physics.setMeter(64) --the height of a meter our worlds will be 64px
     world = love.physics.newWorld(0, 9.81 * 64, true) --create a world for the bodies to exist in with horizontal gravity of 0 and vertical gravity of 9.81
-
+    worlds[0] = world
     --加载中文字体(启动太过缓慢所以先不加载了)
     --local myFont = love.graphics.newFont("simhei.ttf",24)
     --love.graphics.setFont(myFont)
