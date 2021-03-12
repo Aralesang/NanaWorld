@@ -1,13 +1,11 @@
 local GameObject = require "scripts.game_object"
 local Animation = require "plugins.animation"
 
+---子弹
 ---@class Bullet : GameObject
 ---@field animation Animation
 local Bullet = {
-    animation = nil,
-    body = nil,
-    shape = nil,
-    fixture = nil,
+    animation = nil
 }
 
 function Bullet:new(image,x,y)
@@ -18,10 +16,8 @@ function Bullet:new(image,x,y)
     o.position.x = x
     o.position.y = y
 
-    o.body = love.physics.newBody(worlds[0],x,y,"dynamic")
-    o.shape =  love.physics.newCircleShape(10)
-    o.fixture = love.physics.newFixture(o.body, o.shape, 1)
-    o.fixture:setRestitution(0.9)
+    --球形体
+    o:setCollisionCircle(7,0,1,1)
     return o
 end
 
@@ -30,8 +26,6 @@ function Bullet:load()
 end
 
 function Bullet:update(dt)
-    --local x,y = self:getPosition()
-    self:setPosition(self.body:getX(),self.body:getY())
 end
 
 return Bullet

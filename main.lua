@@ -1,6 +1,6 @@
-package.cpath = package.cpath .. ';plugins/?.dll'
-local dbg = require('emmy_core')
-dbg.tcpListen('localhost', 9966)
+--package.cpath = package.cpath .. ';plugins/?.dll'
+--local dbg = require('emmy_core')
+--dbg.tcpListen('localhost', 9966)
 --dbg.waitIDE()
 require "plugins.camera"
 require "scripts.global"
@@ -24,8 +24,8 @@ local objects = {}
 function love.load()
     print("游戏启动...")
 
-    love.physics.setMeter(64) --the height of a meter our worlds will be 64px
-    world = love.physics.newWorld(0, 9.81 * 64, true) --create a world for the bodies to exist in with horizontal gravity of 0 and vertical gravity of 9.81
+    love.physics.setMeter(64) --1米为64单位像素
+    world = love.physics.newWorld(0,0, true) --设置世界重力方向
     worlds[0] = world
     --加载中文字体(启动太过缓慢所以先不加载了)
     --local myFont = love.graphics.newFont("simhei.ttf",24)
@@ -42,7 +42,7 @@ function love.load()
     roleArr["nana"] = npc
 
     --创建角色
-    local player = Role:new("image/player.png", "player", 50, 0)
+    local player = Role:new("image/player.png", "player", 200, 0)
     --player:setScale(2,2)
     roleArr["sakuya"] = player
 
@@ -65,6 +65,7 @@ function love.draw()
     --绘制对象
     for key, value in pairs(Game.gameObjects) do
         value:draw()
+        value.collision:draw() --物理绘制
     end
 
 	Camera:unset()
@@ -81,6 +82,7 @@ function love.update(dt)
     for key, value in pairs(Game.gameObjects) do
         value:animUpdate(dt) --动画更新
         value:update(dt) --帧事件更新
+        value:collisionUpdate(dt) --物理更新
     end
 end
 
