@@ -47,7 +47,6 @@ function PlayerController:update(dt)
         if player.animation.status == "playing" then
             player.animation:stop(0)
         end
-        player.collision.body:applyForce(0,0)
     end
 
 end
@@ -76,23 +75,17 @@ function PlayerController:move(dt,dir)
     local x,y = player:getPosition()
     local distance = math.modf(dt * player.speed)
 
-    local body = player.collision.body
     local speed = self.player.speed
     if dir == "left" then
         x = x - distance
-        --body:applyForce(-speed, 0)
     elseif dir == "right" then
         x = x + distance
-        --body:applyForce(speed, 0)
     elseif dir == "up" then
         y = y - distance
-        --body:applyForce(0, -speed)
     elseif dir == "down" then
         y = y + distance
-        --body:applyForce(0, speed)
     end
-    player.collision:setPosistion(x,y)
-    
+    player:setPosition(x,y)
 end
 
 return PlayerController

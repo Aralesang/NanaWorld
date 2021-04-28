@@ -16,8 +16,6 @@ function Bullet:new(image,x,y)
     o.position.x = x
     o.position.y = y
 
-    --球形体
-    o:setCollisionCircle(7,0,1,1)
     return o
 end
 

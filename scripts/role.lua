@@ -29,9 +29,6 @@ function Role:new(imagePath,name,x,y)
     o.position.x = x
     o.position.y = y
 
-    --设置碰撞
-    o:setCollisionRectangle(55,100,0,2,0,"static")
-    --o.collision.body:setInertia(0)
     return o
 end
 

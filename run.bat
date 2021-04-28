@@ -1,4 +1,4 @@
 @echo off
 chcp 65001
 
-D:\tool\Love\love.exe D:\MyProject\Love2D\HellowWorld
+"C:\Program Files\LOVE\love.exe" "F:\MyGame\Love2d\NanaWorld"

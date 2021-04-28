@@ -22,10 +22,7 @@ local world
 local objects = {}
 
 function love.load()
-    print("游戏启动...")
-
-    love.physics.setMeter(64) --1米为64单位像素
-    world = love.physics.newWorld(0,0, true) --设置世界重力方向
+    print("Game Starting...")
     worlds[0] = world
     --加载中文字体(启动太过缓慢所以先不加载了)
     --local myFont = love.graphics.newFont("simhei.ttf",24)
@@ -46,9 +43,6 @@ function love.load()
     --player:setScale(2,2)
     roleArr["sakuya"] = player
 
-    print(player.gameObjectName)
-    print(player.name)
-
     --初始化角色控制器
     playerController = PlayerController:new(player)
 
@@ -65,14 +59,12 @@ function love.draw()
     --绘制对象
     for key, value in pairs(Game.gameObjects) do
         value:draw()
-        value.collision:draw() --物理绘制
     end
 
 	Camera:unset()
 end
 
 function love.update(dt)
-    world:update(dt) --this puts the world into motion
 
     local player = playerController.player
     local width, hegiht = love.window.getMode()
@@ -82,7 +74,6 @@ function love.update(dt)
     for key, value in pairs(Game.gameObjects) do
         value:animUpdate(dt) --动画更新
         value:update(dt) --帧事件更新
-        value:collisionUpdate(dt) --物理更新
     end
 end
 
