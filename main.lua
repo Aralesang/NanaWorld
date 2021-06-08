@@ -3,12 +3,12 @@
 --dbg.tcpListen('localhost', 9966)
 --dbg.waitIDE()
 require "plugins.camera"
-require "scripts.global"
 local GameObject = require "scripts.game_object"
 local Game = require "scripts.game"
 local Animation = require "plugins.animation"
 local Role = require "scripts.role"
 local PlayerController = require "scripts.player_controller"
+local Debug = require "scripts.debug"
 
 ---@type Role[]
 local roleArr = {}
@@ -16,24 +16,18 @@ local roleArr = {}
 local playerController
 --背景图片
 local backgroundImage
---世界
-local world
---物理对象列表
-local objects = {}
 
 function love.load()
-    print("Game Starting...")
-    worlds[0] = world
-    --加载中文字体(启动太过缓慢所以先不加载了)
-    --local myFont = love.graphics.newFont("simhei.ttf",24)
-    --love.graphics.setFont(myFont)
-    --love.keyboard.setKeyRepeat(true)
+    print("游戏启动...")
+    --加载中文字体(启动会很缓慢)
+    local myFont = love.graphics.newFont("fonts/SourceHanSansCN-Bold.otf", 16)
+    love.graphics.setFont(myFont)
     --更改图像过滤方式，以显示高清马赛克
     love.graphics.setDefaultFilter("nearest", "nearest")
     --加载背景图片
     backgroundImage = love.graphics.newImage("image/background.jpg")
     --创建npc
-    local npc = Role:new("image/npc.png", "娜娜")
+    local npc = Role:new("image/npc.png", "npc", 0, 0)
     --npc:setScale(2,2)
     npc.animation:stop(0)
     roleArr["nana"] = npc
@@ -48,6 +42,11 @@ function love.load()
 
     for key, value in pairs(Game.gameObjects) do
         value:load()
+        ---触发组件加载
+        for componentName,component in pairs(value.components) do
+            component:load()
+        end
+
     end
 end
 
@@ -59,13 +58,17 @@ function love.draw()
     --绘制对象
     for key, value in pairs(Game.gameObjects) do
         value:draw()
+        --触发组件绘制
+        for componentName,component in pairs(value.components) do
+            component:draw()
+        end
     end
 
-	Camera:unset()
+    Camera:unset()
+    Debug.draw()
 end
 
 function love.update(dt)
-
     local player = playerController.player
     local width, hegiht = love.window.getMode()
     Camera:setPosition(player.position.x - width / 2, player.position.y - hegiht / 2)
@@ -74,6 +77,10 @@ function love.update(dt)
     for key, value in pairs(Game.gameObjects) do
         value:animUpdate(dt) --动画更新
         value:update(dt) --帧事件更新
+        --触发组件更新
+        for componentName,component in pairs(value.components) do
+            component:update(dt)
+        end
     end
 end
 

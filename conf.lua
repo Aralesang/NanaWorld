@@ -1,5 +1,5 @@
 function love.conf(t)
-    t.title = "我的游戏"
+    t.title = "娜娜世界"
     t.window.width = 800
     t.window.height = 600
     t.console = true
