@@ -1,8 +1,8 @@
-local Animation = require "plugins.animation"
+local Animation = require "scripts.components.animation"
 ---@type GameObject
-local GameObject = require "scripts.game_object"
-local Game = require "scripts.game"
-local CollisionBox = require "scripts.collisionBox"
+local GameObject = require "scripts.bases.game_object"
+local Game = require "scripts.game.game"
+local CollisionBox = require "scripts.components.collisionBox"
 ---@class Role : GameObject
 ---@field name string 角色名称
 ---@field speed number 角色速度
@@ -45,7 +45,6 @@ function Role:new(imagePath, name, x, y)
 end
 
 function Role:load()
-    
 end
 
 function Role:update(dt)

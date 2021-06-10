@@ -1,14 +1,10 @@
---package.cpath = package.cpath .. ';plugins/?.dll'
---local dbg = require('emmy_core')
---dbg.tcpListen('localhost', 9966)
---dbg.waitIDE()
-require "plugins.camera"
-local GameObject = require "scripts.game_object"
-local Game = require "scripts.game"
-local Animation = require "plugins.animation"
-local Role = require "scripts.role"
-local PlayerController = require "scripts.player_controller"
-local Debug = require "scripts.debug"
+require "scripts.plugins.camera"
+local GameObject = require "scripts.bases.game_object"
+local Game = require "scripts.game.game"
+local Animation = require "scripts.components.animation"
+local Role = require "scripts.game.role"
+local PlayerController = require "scripts.game.player_controller"
+local Debug = require "scripts.utils.debug"
 
 ---@type Role[]
 local roleArr = {}
@@ -18,7 +14,7 @@ local playerController
 local backgroundImage
 
 function love.load()
-    print("游戏启动...")
+    print("game starting...")
     --加载中文字体(启动会很缓慢)
     local myFont = love.graphics.newFont("fonts/SourceHanSansCN-Bold.otf", 16)
     love.graphics.setFont(myFont)
@@ -30,17 +26,18 @@ function love.load()
     local npc = Role:new("image/npc.png", "npc", 0, 0)
     --npc:setScale(2,2)
     npc.animation:stop(0)
-    roleArr["nana"] = npc
+    roleArr["npc"] = npc
 
     --创建角色
     local player = Role:new("image/player.png", "player", 200, 0)
     --player:setScale(2,2)
-    roleArr["sakuya"] = player
+    roleArr["player"] = player
 
     --初始化角色控制器
     playerController = PlayerController:new(player)
 
     for key, value in pairs(Game.gameObjects) do
+        --对象加载
         value:load()
         ---触发组件加载
         for componentName,component in pairs(value.components) do
@@ -57,6 +54,7 @@ function love.draw()
     --love.graphics.draw(backgroundImage)
     --绘制对象
     for key, value in pairs(Game.gameObjects) do
+        ---@see GameObject #draw
         value:draw()
         --触发组件绘制
         for componentName,component in pairs(value.components) do

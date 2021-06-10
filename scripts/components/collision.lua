@@ -1,4 +1,4 @@
-local Component = require "scripts.component"
+local Component = require "scripts.components.component"
 
 ---@class Collision : Component 碰撞器基类
 ---@field x number 碰撞器中心点位置x

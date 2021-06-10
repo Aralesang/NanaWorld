@@ -1,11 +1,11 @@
 ---@type Game
-local Game = require "scripts.game"
+local Game = require "scripts.game.game"
 ---@type Component
-local Component = require "scripts.component"
+local Component = require "scripts.components.component"
 ---@type Debug
-local Debug = require "scripts.debug"
+local Debug = require "scripts.utils.debug"
 ---@type Collision
-local Collision = require "scripts.collision"
+local Collision = require "scripts.components.collision"
 ---碰撞器_圆形
 ---@class CollisionCircular : Collision
 ---@field debug boolean 绘制形状

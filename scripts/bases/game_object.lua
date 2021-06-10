@@ -1,5 +1,5 @@
 ---@type Game
-local Game = require "scripts.game"
+local Game = require "scripts.game.game"
 ---@type CollisionBox
 --local Collision = require "scripts.collision"
 ---游戏对象基本类
@@ -10,6 +10,9 @@ local Game = require "scripts.game"
 ---@field scale table 对象缩放比例因子{x,y}
 ---@field rotate number 对象旋转弧度
 ---@field components Component[] 组件
+---@field load function 对象加载
+---@field update function 对象帧更新 参数: dt 与上一帧的时间间隔(毫秒)
+---@field draw function 对象图像绘制
 local GameObject = {
     gameObjectName = nil,
     animation = nil,
@@ -17,7 +20,6 @@ local GameObject = {
     scale = {w = 1, h = 1},
     rotate = 0,
     components = {},
-    --collision = nil
 }
 
 function GameObject:new()
@@ -25,8 +27,6 @@ function GameObject:new()
     local o = {}
     setmetatable(o, {__index = self})
     o.draw = GameObject.draw
-    o.load = GameObject.load
-    o.update = GameObject.update
     o.animUpdate = GameObject.animUpdate
     o.setScale = GameObject.setScale
     o.setPosition = GameObject.setPosition
@@ -38,26 +38,13 @@ function GameObject:new()
     o.getPosition = GameObject.getPosition
     o.addComponent = GameObject.addComponent
     o.components = {}
-
     Game.gameObjects[o.gameObjectName] = o
     return o
 end
 
----对象加载
-function GameObject:load()
-end
-
----对象帧更新
-function GameObject:update(dt)
-    --self.collision:setPosistion(self.position.x, self.position.y)
-    --self.collision:setScale(self.scale.w, self.scale.h)
-end
-
 ---对象图像绘制
----@see CollisionBox #draw
 function GameObject:draw()
     self.animation:draw(self.position.x, self.position.y, self.rotate, self.scale.w, self.scale.h)
-    --self.collision:draw()
 end
 
 ---对象动画更新
@@ -71,8 +58,6 @@ end
 function GameObject:setPosition(x, y)
     self.position.x = x
     self.position.y = y
-    --self.collision.x = x
-    --self.collision.y = y
 end
 
 ---获取对象坐标

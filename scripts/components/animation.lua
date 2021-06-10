@@ -1,4 +1,4 @@
----@class Animation
+---@class Animation : Component
 ---@field public image table 用于创建动画的序列帧位图
 ---@field width number 单帧对象宽度
 ---@field height number 单帧对象高度
@@ -26,6 +26,7 @@ local Animation = {
     xCount = 0, --x轴帧数量
     yCount = 0, --y轴帧数量
     status = "playing", --动画状态
+    componentName = "Animation"
 }
 
 ---创建一个新的动画对象

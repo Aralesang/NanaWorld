@@ -1,4 +1,4 @@
-local Bullet = require "scripts.bullet"
+local Bullet = require "scripts.game.bullet"
 
 --子弹图片
 local bulletImage
@@ -51,6 +51,7 @@ function PlayerController:update(dt)
 
 end
 
+---按键检测
 function PlayerController:keypressed(key)
     if key == "space" then
         if bulletImage == nil then
@@ -61,7 +62,6 @@ function PlayerController:keypressed(key)
         y = y + 30
         local bullet = Bullet:new(bulletImage,x,y)
         bullet:setScale(0.2,0.2)
-        --bullet:setPosition(x,y)
     end
 end
 
