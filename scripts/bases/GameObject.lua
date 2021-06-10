@@ -1,5 +1,5 @@
 ---@type Game
-local Game = require "scripts.game.game"
+local Game = require "scripts.game.Game"
 ---@type CollisionBox
 ---游戏对象基本类
 ---@class GameObject
@@ -11,7 +11,9 @@ local Game = require "scripts.game.game"
 ---@field components Component[] 组件
 ---@field load function 对象加载
 ---@field update function 对象帧更新 参数: dt 与上一帧的时间间隔(毫秒)
----@field draw function 对象图像绘制
+---@field onBeginCollison function 碰撞开始事件
+---@field onEndCollison function 碰撞结束事件
+---@field isDestroy boolean 销毁标记,持有此标记的对象，将会在本次帧事件的末尾被清除
 local GameObject = {
     gameObjectName = nil,
     animation = nil,
@@ -19,6 +21,7 @@ local GameObject = {
     scale = {w = 1, h = 1},
     rotate = 0,
     components = {},
+    isDestroy = false
 }
 
 function GameObject:new()
@@ -38,13 +41,10 @@ function GameObject:new()
     o.addComponent = GameObject.addComponent
     o.components = {}
     o.getComponent = self.getComponent
-    Game.gameObjects[o.gameObjectName] = o
-    return o
-end
+    o.destroy = self.destroy
+    table.insert(Game.gameObjects,o)
 
----对象图像绘制
-function GameObject:draw()
-    --self.animation:draw(self.position.x, self.position.y, self.rotate, self.scale.w, self.scale.h)
+    return o
 end
 
 ---设置对象坐标
@@ -90,6 +90,15 @@ end
 function GameObject:getComponent(componentType)
     local component = self.components[componentType.componentName]
     return component
+end
+
+---对象销毁
+function GameObject:destroy()
+    --清除所有组件
+    -- for k,v in pairs(self.components) do
+    --     table.remove(k)
+    -- end
+    self.isDestroy = true
 end
 
 return GameObject

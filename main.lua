@@ -1,9 +1,9 @@
-require "scripts.plugins.camera"
-local GameObject = require "scripts.bases.game_object"
-local Game = require "scripts.game.game"
-local Animation = require "scripts.components.animation"
-local Role = require "scripts.game.role"
-local PlayerController = require "scripts.game.player_controller"
+require "scripts.plugins.Camera"
+local GameObject = require "scripts.bases.GameObject"
+local Game = require "scripts.game.Game"
+local Animation = require "scripts.components.Animation"
+local Role = require "scripts.game.Role"
+local PlayerController = require "scripts.game.PlayerController"
 
 ---@type Role[]
 local roleArr = {}
@@ -34,15 +34,6 @@ function love.load()
     --初始化角色控制器
     playerController = PlayerController:new(player)
 
-    for key, value in pairs(Game.gameObjects) do
-        --对象加载
-        value:load()
-        ---触发组件加载
-        for componentName,component in pairs(value.components) do
-            component:load()
-        end
-
-    end
 end
 
 function love.draw()
@@ -53,8 +44,6 @@ function love.draw()
     --love.graphics.draw(backgroundImage)
     --绘制对象
     for key, value in pairs(Game.gameObjects) do
-        ---@see GameObject #draw
-        value:draw()
         --触发组件绘制
         for componentName,component in pairs(value.components) do
             component:draw()
@@ -71,6 +60,8 @@ function love.update(dt)
     local width, hegiht = love.window.getMode()
     Camera:setPosition(player.position.x - width / 2, player.position.y - hegiht / 2)
     playerController:update(dt)
+    ---@type GameObject[]
+    local destroyPool = {}
     --触发对象更新
     for key, value in pairs(Game.gameObjects) do
         value:update(dt) --帧事件更新
@@ -78,7 +69,14 @@ function love.update(dt)
         for componentName,component in pairs(value.components) do
             component:update(dt)
         end
+        if value.isDestroy then
+            table.insert(destroyPool,value)
+        end
     end
+
+    local i = 1
+    --TODO:销毁对象
+
 end
 
 function love.keypressed(key)

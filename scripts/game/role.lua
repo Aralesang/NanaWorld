@@ -1,8 +1,8 @@
-local Animation = require "scripts.components.animation"
+local Animation = require "scripts.components.Animation"
 ---@type GameObject
-local GameObject = require "scripts.bases.game_object"
-local Game = require "scripts.game.game"
-local CollisionBox = require "scripts.components.collisionBox"
+local GameObject = require "scripts.bases.GameObject"
+local Game = require "scripts.game.Game"
+local CollisionBox = require "scripts.components.CollisionBox"
 ---@class Role : GameObject
 ---@field name string 角色名称
 ---@field speed number 角色速度

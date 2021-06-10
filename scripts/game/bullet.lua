@@ -1,6 +1,6 @@
-local GameObject = require "scripts.bases.game_object"
-local Animation = require "scripts.components.animation"
-local Colllision = require "scripts.components.collisionCircular"
+local GameObject = require "scripts.bases.GameObject"
+local Animation = require "scripts.components.Animation"
+local Colllision = require "scripts.components.CollisionCircular"
 
 ---子弹
 ---@class Bullet : GameObject
@@ -29,13 +29,17 @@ function Bullet:new(image,x,y)
     return o
 end
 
-function Bullet:load()
-    Debug.log("子弹加载")
-end
-
 function Bullet:update(dt)
     --子弹将会自动前进
     self.position.x = self.position.x - self.speed
 end
+
+---碰撞回调
+---@param collision Collision
+function Bullet:onBeginCollison(collision)
+    --摧毁接触到的对象
+    collision.gameObject:destroy()
+end
+
 
 return Bullet

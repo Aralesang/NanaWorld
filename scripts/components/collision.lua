@@ -1,4 +1,4 @@
-local Component = require "scripts.components.component"
+local Component = require "scripts.components.Component"
 
 ---@class Collision : Component 碰撞器基类
 ---@field x number 碰撞器中心点位置x
@@ -47,6 +47,9 @@ end
 function Collision:onBeginCollison(otherColl)
     table.insert(self.collisions,otherColl)
     self.isCollision = true
+    if self.gameObject.onBeginCollison then
+        self.gameObject:onBeginCollison(otherColl)
+    end
 end
 
 ---碰撞结束
@@ -65,6 +68,9 @@ function Collision:onEndCollison(otherColl)
     
     if count == 0 then
         self.isCollision = false
+    end
+    if self.gameObject.onEndCollison then
+        self.gameObject:onEndCollison(otherColl)
     end
 end
 

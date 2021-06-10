@@ -1,11 +1,11 @@
 ---@type Game
-local Game = require "scripts.game.game"
+local Game = require "scripts.game.Game"
 ---@type Component
-local Component = require "scripts.components.component"
+local Component = require "scripts.components.Component"
 ---@type Debug
-local Debug = require "scripts.utils.debug"
+local Debug = require "scripts.utils.Debug"
 ---@type Collision
-local Collision = require "scripts.components.collision"
+local Collision = require "scripts.components.Collision"
 
 ---碰撞器_盒状
 ---@class CollisionBox : Collision

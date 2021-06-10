@@ -1,5 +1,5 @@
-local Bullet = require "scripts.game.bullet"
-local Animation = require "scripts.components.animation"
+local Bullet = require "scripts.game.Bullet"
+local Animation = require "scripts.components.Animation"
 
 --子弹图片
 local bulletImage
