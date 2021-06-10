@@ -2,8 +2,6 @@
 local Game = require "scripts.game.game"
 ---@type Component
 local Component = require "scripts.components.component"
----@type Debug
-local Debug = require "scripts.utils.debug"
 ---@type Collision
 local Collision = require "scripts.components.collision"
 ---碰撞器_圆形
@@ -30,28 +28,51 @@ function CollisionCircular:load()
 end
 
 function CollisionCircular:update(dt)
-    self:setPosistion(self.gameObject.position.x,self.gameObject.position.y)
+    self:setPosistion(self.gameObject.position.x, self.gameObject.position.y)
     local collision = self
-    ---@param otherCollision CollisionCircular
-    for objName, otherCollision in pairs(Game.controllers) do
+    ---@type CollisionCircular
+    ---@param otherCollision Collision
+    for index, otherCollision in pairs(Game.controllers) do
         --对圆形的碰撞
-        if otherCollision.componentName == "CollisionCircular" and tostring(collision) ~= tostring(otherCollision) then
+        ---@type CollisionCircular
+        local otherCollisionCircular = otherCollision
+        if
+            otherCollision.componentName == "CollisionCircular" and
+                tostring(collision) ~= tostring(otherCollisionCircular)
+         then
             if
-                math.abs(otherCollision.x - collision.x) <= otherCollision.radius + collision.radius and
-                    math.abs(otherCollision.y - collision.y) <= otherCollision.radius + collision.radius
+                math.abs(otherCollisionCircular.x - collision.x) <= otherCollisionCircular.radius + collision.radius and
+                    math.abs(otherCollisionCircular.y - collision.y) <= otherCollisionCircular.radius + collision.radius
              then
-                if self:checkCollision(otherCollision) == false then
-                    collision:onBeginCollison(collision, otherCollision)
+                if self:checkCollision(otherCollisionCircular) == false then
+                    collision:onBeginCollison(otherCollisionCircular)
                 end
             else
-                if self:checkCollision(otherCollision) == true then
-                    collision:onEndCollison(collision, otherCollision)
+                if self:checkCollision(otherCollisionCircular) == true then
+                    collision:onEndCollison(otherCollisionCircular)
                 end
             end
         end
-        
-        --TODO:对四边形的碰撞
 
+        --对四边形的碰撞
+        ---@type CollisionBox
+        local otherCollisionBox = otherCollision
+        if otherCollision.componentName == "CollisionBox" and tostring(collision) ~= tostring(otherCollisionBox) then
+            if
+                math.abs(collision.x - otherCollisionBox.x) <= otherCollisionBox.width / 2 + collision.radius and
+                    math.abs(collision.y - otherCollisionBox.y) <= otherCollisionBox.height / 2 + collision.radius
+             then
+                if self:checkCollision(otherCollisionBox) == false then
+                    collision:onBeginCollison(otherCollisionBox)
+                    otherCollisionBox:onBeginCollison(collision) --触发四边形的碰撞回调
+                end
+            else
+                if self:checkCollision(otherCollisionBox) == true then
+                    collision:onEndCollison(otherCollisionBox)
+                    otherCollisionBox:onEndCollison(collision) --触发四边形的碰撞回调
+                end
+            end
+        end
     end
 end
 

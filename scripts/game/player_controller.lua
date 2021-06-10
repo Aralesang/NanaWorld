@@ -1,4 +1,5 @@
 local Bullet = require "scripts.game.bullet"
+local Animation = require "scripts.components.animation"
 
 --子弹图片
 local bulletImage
@@ -34,18 +35,20 @@ function PlayerController:update(dt)
         key = "down"
     end
     
+    local animation = player:getComponent(Animation)
+
     if key ~= nil then
         if player.orientation ~= key then
             player:setDir(key) --设置角色面向
         end
-        if player.animation.status ~= "playing" then
-            player.animation:play(1)
+        if animation.status ~= "playing" then
+            animation:play(1)
         end
         self:move(dt,key) --移动
         key = nil
     else
-        if player.animation.status == "playing" then
-            player.animation:stop(0)
+        if animation.status == "playing" then
+            animation:stop(0)
         end
     end
 

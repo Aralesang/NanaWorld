@@ -44,24 +44,38 @@ function Collision:setPosistion(x, y)
 end
 
 ---碰撞开始
-function Collision:onBeginCollison(coll, otherColl)
-    self.collisions[tostring(otherColl)] = otherColl
+function Collision:onBeginCollison(otherColl)
+    table.insert(self.collisions,otherColl)
     self.isCollision = true
 end
 
 ---碰撞结束
-function Collision:onEndCollison(coll, otherColl)
-    self.collisions[tostring(otherColl)] = nil
+---@param otherColl Collision
+function Collision:onEndCollison(otherColl)
+    local count = 0
+    for k,v in pairs(self.collisions) do
+        if v ~= nil then
+            count = count + 1
+            if v == otherColl then
+                table.remove(self.collisions,k)
+                count = count - 1
+            end
+        end
+    end
     
+    if count == 0 then
+        self.isCollision = false
+    end
 end
 
 ---检查目标碰撞器是否与该碰撞器碰撞
 function Collision:checkCollision(otherColl)
-    local isCollision = false
-    if self.collisions[tostring(otherColl)] ~= nil then
-        isCollision = true
+    for k,v in pairs(self.collisions) do
+        if v == otherColl then
+            return true
+        end
     end
-    return isCollision
+    return false
 end
 
 return Collision

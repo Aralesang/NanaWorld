@@ -1,7 +1,6 @@
 ---@type Game
 local Game = require "scripts.game.game"
 ---@type CollisionBox
---local Collision = require "scripts.collision"
 ---游戏对象基本类
 ---@class GameObject
 ---@field gameObjectName string 对象名称
@@ -38,18 +37,14 @@ function GameObject:new()
     o.getPosition = GameObject.getPosition
     o.addComponent = GameObject.addComponent
     o.components = {}
+    o.getComponent = self.getComponent
     Game.gameObjects[o.gameObjectName] = o
     return o
 end
 
 ---对象图像绘制
 function GameObject:draw()
-    self.animation:draw(self.position.x, self.position.y, self.rotate, self.scale.w, self.scale.h)
-end
-
----对象动画更新
-function GameObject:animUpdate(dt)
-    self.animation:update(dt)
+    --self.animation:draw(self.position.x, self.position.y, self.rotate, self.scale.w, self.scale.h)
 end
 
 ---设置对象坐标

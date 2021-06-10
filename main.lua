@@ -4,7 +4,6 @@ local Game = require "scripts.game.game"
 local Animation = require "scripts.components.animation"
 local Role = require "scripts.game.role"
 local PlayerController = require "scripts.game.player_controller"
-local Debug = require "scripts.utils.debug"
 
 ---@type Role[]
 local roleArr = {}
@@ -25,7 +24,6 @@ function love.load()
     --创建npc
     local npc = Role:new("image/npc.png", "npc", 0, 0)
     --npc:setScale(2,2)
-    npc.animation:stop(0)
     roleArr["npc"] = npc
 
     --创建角色
@@ -49,6 +47,7 @@ end
 
 function love.draw()
     Camera:set()
+    --love.graphics.push()
     local player = playerController.player
     ---绘制背景
     --love.graphics.draw(backgroundImage)
@@ -63,6 +62,7 @@ function love.draw()
     end
 
     Camera:unset()
+    --love.graphics.pop()
     Debug.draw()
 end
 
@@ -73,7 +73,6 @@ function love.update(dt)
     playerController:update(dt)
     --触发对象更新
     for key, value in pairs(Game.gameObjects) do
-        value:animUpdate(dt) --动画更新
         value:update(dt) --帧事件更新
         --触发组件更新
         for componentName,component in pairs(value.components) do

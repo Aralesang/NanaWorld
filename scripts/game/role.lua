@@ -8,11 +8,13 @@ local CollisionBox = require "scripts.components.collisionBox"
 ---@field speed number 角色速度
 ---@field moveDir string 角色移动方向
 ---@field orientation string 角色朝向
+---@field animation Animation 动画组件
 local Role = {
     name = nil,
     speed = 100,
     moveDir = "down", --移动方向
-    orientation = "down" --角色朝向
+    orientation = "down", --角色朝向
+    animation = nil
 }
 
 ---@param imagePath table 角色图像地址
@@ -32,7 +34,11 @@ function Role:new(imagePath, name, x, y)
     local o = GameObject:new()
     setmetatable(o, {__index = self})
     local image = love.graphics.newImage(imagePath)
-    o.animation = Animation:new(image, 4, 4, 0.3)
+    
+    --附加动画组件
+    ---@type Animation
+    o.animation = o:addComponent(Animation)
+    o.animation:init(image,4,4,0.3)
     o.name = name
     o.position.x = x
     o.position.y = y

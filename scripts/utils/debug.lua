@@ -14,5 +14,3 @@ end
 function Debug.draw()
     love.graphics.print(Debug.text)
 end
-
-return Debug

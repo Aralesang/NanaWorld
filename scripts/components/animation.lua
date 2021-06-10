@@ -25,33 +25,56 @@ local Animation = {
     timeMultiply = 1, --动画播放速度倍率
     xCount = 0, --x轴帧数量
     yCount = 0, --y轴帧数量
-    status = "playing", --动画状态
+    status = "stop", --动画状态
     componentName = "Animation"
 }
 
+function Animation:load()
+    -- body
+end
+
+function Animation:draw()
+    local gameObject = self.gameObject
+    local position = gameObject.position
+    self:drawAnimation(position.x, position.y, gameObject.rotate, gameObject.scale.w, gameObject.scale.h)
+end
+
 ---创建一个新的动画对象
+---@return Animation
+function Animation:new (data)
+    ---@type Animation
+    local o = {}
+    setmetatable(o,{__index=self})
+
+    o.image = nil
+    o.xCount = 0
+    o.yCount = 0
+    o.width = 0
+    o.height = 0
+    o.row = 0
+    o.timeInterval = 0
+    o.frameCount = 0
+    o.quad = nil
+
+    return o
+end
+
+---动画组件初始化
 ---@param image Image 用于创建动画的序列帧位图
 ---@param xCount number x轴帧数量
 ---@param yCount number y轴帧数量
 ---@param timeInterval number 动画播放时间间隔
 ---@param row number 当前所使用的动画行
----@return Animation
-function Animation:new (image,xCount,yCount,timeInterval,row)
-    ---@type Animation
-    local o = {}
-    setmetatable(o,{__index=self})
-
-    o.image = image or {}
-    o.xCount = xCount or 0
-    o.yCount = yCount or 0
-    o.width = o.image:getWidth() / o.xCount
-    o.height = o.image:getHeight() / o.yCount
-    o.row = row or 0
-    o.timeInterval = timeInterval or 0
-    o.frameCount = o.image:getWidth() / o.width
-    o.quad = love.graphics.newQuad(0,o.row * o.height,o.width, o.height, o.image:getWidth(), o.image:getHeight())
-
-    return o
+function Animation:init(image,xCount,yCount,timeInterval,row)
+    self.image = image or {}
+    self.xCount = xCount or 0
+    self.yCount = yCount or 0
+    self.width = self.image:getWidth() / self.xCount
+    self.height = self.image:getHeight() / self.yCount
+    self.row = row or 0
+    self.timeInterval = timeInterval or 0
+    self.frameCount = self.image:getWidth() / self.width
+    self.quad = love.graphics.newQuad(0,self.row * self.height,self.width, self.height, self.image:getWidth(), self.image:getHeight())
 end
 
 ---绘制动画图像
@@ -62,7 +85,7 @@ end
 ---@param sy number 比例因子(y轴)
 ---@param ox number 原点偏移（x轴）
 ---@param oy number 原点偏移（y轴）
-function Animation:draw(x,y,r,sx,sy,ox,oy,kx,ky)
+function Animation:drawAnimation(x,y,r,sx,sy,ox,oy,kx,ky)
     local image = self.image
     local quad = self.quad
     love.graphics.draw(image,quad,x,y,r,sx,sy,ox,oy,kx,ky)

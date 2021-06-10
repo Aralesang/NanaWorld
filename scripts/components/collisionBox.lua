@@ -41,7 +41,7 @@ function CollisionBox:update(dt)
     self.y = self.gameObject.position.y
     local collision = self
      ---@param otherCollision CollisionBox
-     for objName, otherCollision in pairs(Game.controllers) do
+     for index, otherCollision in pairs(Game.controllers) do
         if otherCollision.componentName == "CollisionBox" and tostring(collision) ~= tostring(otherCollision) then
             if
                 collision.x + collision.width >= otherCollision.x and
@@ -49,9 +49,13 @@ function CollisionBox:update(dt)
                     collision.y + collision.height >= otherCollision.y and
                     collision.y - otherCollision.y <= collision.height
              then
-                collision:onBeginCollison(collision, otherCollision)
+                if self:checkCollision(otherCollision) == false then
+                    collision:onBeginCollison(otherCollision)
+                end
             else
-                collision:onEndCollison(collision, otherCollision)
+                if self:checkCollision(otherCollision) == true then
+                    collision:onEndCollison(otherCollision)
+                end
             end
         end
     end
@@ -67,8 +71,6 @@ function CollisionBox:draw()
         love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
     end
 end
-
-
 
 ---设置碰撞器体积
 function CollisionBox:setScale(w, h)
