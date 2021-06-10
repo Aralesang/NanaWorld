@@ -4,34 +4,25 @@ local Game = require "scripts.game"
 local Component = require "scripts.component"
 ---@type Debug
 local Debug = require "scripts.debug"
-
+---@type Collision
+local Collision = require "scripts.collision"
 ---碰撞器_圆形
----@class CollisionCircular : Component
+---@class CollisionCircular : Collision
 ---@field debug boolean 绘制形状
 ---@field radius number 半径
----@field x number 碰撞器中心点位置x
----@field y number 碰撞器中心点位置y
----@field debug boolean 是否启用debug模式，启用后将在游戏中绘制出碰撞器的轮廓
----@field isCollision boolean 如果当前碰撞器处于碰撞中，则为true
 local CollisionCircular = {
     radius = 0,
-    x = 0,
-    y = 0,
-    debug = true,
-    isCollision = false,
     componentName = "CollisionCircular"
 }
 
----创建一个新π碰撞器
----@param target GameObject 要附加的目标
----@param w number 碰撞器的宽度
-function CollisionCircular:new(target, radius)
-    ---@type Collision
-    local o = Component:new()
+---创建一个新碰撞器
+function CollisionCircular:new()
+    ---@type CollisionCircular
+    local o = Collision:new()
+    o.debug = true
     setmetatable(o, {__index = self})
     Game.controllers[tostring(o)] = o
-    self.radius = radius or 0
-    self.target = target
+    self.radius = 0
     return o
 end
 
@@ -43,16 +34,24 @@ function CollisionCircular:update(dt)
     local collision = self
     ---@param otherCollision CollisionCircular
     for objName, otherCollision in pairs(Game.controllers) do
-        if otherCollision.componentName == self.componentName and tostring(collision) ~= tostring(otherCollision) then
+        --对圆形的碰撞
+        if otherCollision.componentName == "CollisionCircular" and tostring(collision) ~= tostring(otherCollision) then
             if
-                math.abs(otherCollision.x - collision.x) < otherCollision.radius + collision.radius and
-                    math.abs(otherCollision.y - collision.y) < otherCollision.radius + collision.radius
+                math.abs(otherCollision.x - collision.x) <= otherCollision.radius + collision.radius and
+                    math.abs(otherCollision.y - collision.y) <= otherCollision.radius + collision.radius
              then
-                collision:onBeginCollison(collision, otherCollision)
+                if self:checkCollision(otherCollision) == false then
+                    collision:onBeginCollison(collision, otherCollision)
+                end
             else
-                collision:onEndCollison(collision, otherCollision)
+                if self:checkCollision(otherCollision) == true then
+                    collision:onEndCollison(collision, otherCollision)
+                end
             end
         end
+        
+        --TODO:对四边形的碰撞
+
     end
 end
 
@@ -67,32 +66,9 @@ function CollisionCircular:draw()
     end
 end
 
----获取碰撞器所在位置
----@return x 碰撞器所在x坐标
----@return y 碰撞器所在y坐标
-function CollisionCircular:getPosistion()
-    return self.x, self.y
-end
-
----设置碰撞器位置
-function CollisionCircular:setPosistion(x, y)
-    self.x = x
-    self.y = y
-end
-
 ---设置碰撞器体积
 function CollisionCircular:setScale(radius)
     self.radius = radius
-end
-
----碰撞开始
-function CollisionCircular:onBeginCollison(coll, ohterColl)
-    self.isCollision = true
-end
-
----碰撞结束
-function CollisionCircular:onEndCollison(coll, otherColl)
-    self.isCollision = false
 end
 
 return CollisionCircular

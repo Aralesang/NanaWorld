@@ -2,7 +2,7 @@ local Animation = require "plugins.animation"
 ---@type GameObject
 local GameObject = require "scripts.game_object"
 local Game = require "scripts.game"
-local Collision = require "scripts.collisionBox"
+local CollisionBox = require "scripts.collisionBox"
 ---@class Role : GameObject
 ---@field name string 角色名称
 ---@field speed number 角色速度
@@ -38,8 +38,7 @@ function Role:new(imagePath, name, x, y)
     o.position.y = y
 
     --创建碰撞器
-    --local collision = Collision:new(x, y, 32, 48)
-    local collision = o:addComponent(Collision)
+    local collision = o:addComponent(CollisionBox)
     collision:setScale(32,48)
 
     return o
